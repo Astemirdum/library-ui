@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "library-ui.fullname" . }}-svc
+  labels:
+    {{- include "library-ui.labels" . | nindent 4 }}
+  namespace: {{ include "library-ui.namespace" . }}
+spec:
+  type: {{ .Values.libraryUI.service.type }}
+  ports:
+    - port: {{ .Values.libraryUI.service.port }}
+      targetPort: http
+      protocol: TCP
+  selector:
+    {{- include "library-ui.selectorLabels" . | nindent 4 }}

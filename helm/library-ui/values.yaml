@@ -1,0 +1,74 @@
+# Default values for library-ui.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+namespace: "default"
+
+configData:
+  libraryUI:
+    http:
+      host: 0.0.0.0
+      port: 80
+
+app:
+  affinity: { }
+  tolerations: [ ]
+  nodeSelector: { }
+  podAnnotations: { }
+  imagePullSecrets: [ ]
+  podSecurityContext: { }
+  securityContext: { }
+  strategy:
+    rollingUpdate:
+      maxSurge: 1 # 50%
+      maxUnavailable: 1
+    type: RollingUpdate
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 3
+    targetCPUUtilizationPercentage: 90
+    targetMemoryUtilizationPercentage: 90
+    packetsPerSecond: ""
+  initdbPvPvc:
+    enabled: false
+
+libraryUI:
+  affinity: { }
+  tolerations: [ ]
+  nodeSelector: { }
+  podAnnotations: {}
+  imagePullSecrets: [ ]
+  podSecurityContext: { }
+  securityContext: { }
+  replicaCount: 1
+  image:
+    hostname: docker.io
+    repository: astdockerid1/library-ui
+    tag: "v1.0"
+    pullPolicy: Always
+
+  name: "library-ui"
+  fullname: "library-ui"
+
+  resources:
+    requests:
+      cpu: 50m
+      memory: 50Mi
+    limits:
+      cpu: 100m
+      memory: 100Mi
+
+  service:
+    type: ClusterIP
+    port: 3000
+  containerPort: 80
+  portName: http
+
+  restartPolicy: Always
+  priority:
+    className: high-priority
+    value: 10000
+  terminationGracePeriodSeconds: 60
+
+

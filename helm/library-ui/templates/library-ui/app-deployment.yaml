@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "library-ui.fullname" . }}-deployment
+  labels:
+    {{- include "library-ui.labels" . | nindent 4 }}
+  namespace: {{ include "library-ui.namespace" . }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "-2"
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  replicas: {{ .Values.libraryUI.replicaCount | default 1 }}
+  selector:
+    matchLabels:
+      {{- include "library-ui.selectorLabels" . | nindent 6 }}
+  strategy:
+    {{- include "library-ui.strategy" . | nindent 4 }}
+  template:
+    metadata:
+      {{- with .Values.libraryUI.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "library-ui.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.libraryUI.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.app.podSecurityContext | nindent 8 }}
+      containers:
+        - name: http-{{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.app.securityContext | nindent 12 }}
+          image: "{{ .Values.libraryUI.image.repository }}:{{ .Values.libraryUI.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.libraryUI.image.pullPolicy }}
+          env:
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: APP_NODENAME
+              value: "app@$(MY_POD_IP)"
+          envFrom:
+            - configMapRef:
+                name: {{ include "library-ui.fullname" . }}-config
+          ports:
+            - name: http
+              containerPort: {{ .Values.libraryUI.containerPort }}
+              protocol: TCP
+          {{- include "library-ui.health" . | nindent 10 }}
+          resources:
+            {{- toYaml .Values.libraryUI.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+              subPath: data
+      restartPolicy: {{ .Values.libraryUI.restartPolicy }}
+      volumes:
+        - name: data
+          emptyDir: { }
+
+      {{- with .Values.app.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.app.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.app.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

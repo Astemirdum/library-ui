@@ -1,0 +1,15 @@
+version: "3.9"
+services:
+  library-ui:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: library-ui:latest
+    ports:
+      - "3000:80"
+    networks:
+      - library
+
+networks:
+  library:
+
