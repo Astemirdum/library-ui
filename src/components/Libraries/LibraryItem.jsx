@@ -15,7 +15,7 @@ const LibraryItem = ({library}) => {
                 <p>City: {library.city}</p>
             </div>
             <div className="post__btns">
-                <MyButton onClick={() => navigate(`/libraries/${library.libraryUid}/books`)}>
+                <MyButton onClick={() => navigate(`/libraries/${library.libraryUid}/books?name=${library.name}`)}>
                     Открыть
                 </MyButton>
             </div>

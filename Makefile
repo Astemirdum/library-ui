@@ -1,11 +1,10 @@
 .PHONY: install
 install:
-	npm install
+	npm install # npm i
 
 .PHONY: start
-start:
-	npm start
-
+start: 
+	NODE_OPTIONS=--openssl-legacy-provider npm start
 
 .PHONY: run
 run: 

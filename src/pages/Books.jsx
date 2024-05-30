@@ -24,7 +24,7 @@ function Books() {
         try {
             const response = await GatewayService.fetchBooks(libraryUid, limit, page, showAll);
             console.log('fetchBooks data:', response.data);
-            setBooks([...books, ...response.data.items]);
+            setBooks([...response.data.items]);
             const totalCount = response.data.totalElements;
             setTotalPages(getPageCount(totalCount, limit));
         }catch(error){

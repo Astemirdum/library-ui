@@ -18,6 +18,7 @@ const ReservationReturnForm = (props) => {
             <MySelect
                 value={reservation.condition}
                 onChange={value => setReservation({...reservation, condition: value})}
+                // defaultValue="EXCELLENT"
                 options={[
                     {value: 'EXCELLENT', name: 'EXCELLENT'},
                     {value: 'GOOD', name: 'GOOD'},

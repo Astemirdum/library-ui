@@ -6,7 +6,7 @@ const LibraryFilter = ({filter, setFilter}) => {
         <div>
             <MySelect
                 value={filter}
-                onChange={value => setFilter(value)}
+                onChange={e => setFilter(e)}
                 defaultValue="Москва"
                 options={[{value: 'Москва', name: "Москва"}]}
             />
