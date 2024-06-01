@@ -1,5 +1,7 @@
 # Library-UI (React)
 
+Library-UI is a frontend in React for Library Services as backend
+
 ## The following concepts are applied in app:
 - React App
 - Authorization and authentication using a stateless approach (JWT)
