@@ -28,9 +28,6 @@ image-push:
 	docker push astdockerid1/library-ui:v1.0
 
 
-SERVICE_NAME=library
-ENV=.env
-
 HELM=helm/library-ui
 NAMESPACE=default
 MY_RELEASE=rsoi-ui
